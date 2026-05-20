@@ -1,16 +1,87 @@
-# pam_project
+# PAM Project — Workout Tracker
 
-A new Flutter project.
+Aplikacja do śledzenia treningów dla sportowców. Budowana w Flutter + Supabase.
 
-## Getting Started
+## Stack technologiczny
 
-This project is a starting point for a Flutter application.
+- **Flutter** — framework UI
+- **Supabase** — backend (auth, baza danych)
+- **Riverpod** — zarządzanie stanem
+- **Freezed** — immutable models
+- **GoRouter** — nawigacja
 
-A few resources to get you started if this is your first Flutter project:
+## Wymagania
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Flutter SDK `>=3.3.0`
+- Dart SDK `>=3.3.0`
+- CMake (Linux desktop)
+- Konto Supabase z skonfigurowaną bazą danych
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Linux
+
+```bash
+sudo apt install cmake ninja-build libgtk-3-dev clang
+```
+
+## Uruchomienie
+
+### 1. Klonowanie repozytorium
+
+```bash
+git clone https://github.com/bsosnowicz/pam_project.git
+cd pam_project
+```
+
+### 2. Instalacja zależności
+
+```bash
+flutter pub get
+```
+
+### 3. Generowanie kodu
+
+Projekt używa generowania kodu (Riverpod, Freezed, JSON). Po każdej zmianie modeli lub providerów uruchom:
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
+
+### 4. Uruchomienie aplikacji
+
+**Linux desktop:**
+```bash
+flutter run -d linux
+```
+
+**Android (emulator lub urządzenie):**
+```bash
+flutter run -d android
+```
+
+**Sprawdzenie dostępnych urządzeń:**
+```bash
+flutter devices
+```
+
+## Struktura projektu
+
+```
+lib/
+├── core/
+│   ├── errors/          # Wyjątki aplikacji
+│   ├── router/          # Konfiguracja nawigacji (GoRouter)
+│   ├── supabase/        # Klient Supabase
+│   ├── theme/           # Kolory i motyw aplikacji
+│   └── utils/           # Narzędzia (kalkulatory, formatowanie dat)
+├── features/
+│   ├── auth/            # Logowanie i rejestracja
+│   ├── analytics/       # Statystyki i wykresy
+│   ├── history/         # Historia treningów
+│   ├── live_tracking/   # Śledzenie treningu na żywo
+│   ├── profile/         # Profil użytkownika
+│   ├── workout_builder/ # Kreator treningu
+│   └── workout_summary/ # Podsumowanie po treningu
+└── shared/
+    ├── providers/       # Globalne providery (motyw)
+    └── widgets/         # Współdzielone widgety
+```
