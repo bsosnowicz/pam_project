@@ -6,10 +6,10 @@ import '../../profile/presentation/profile_provider.dart';
 part 'analytics_provider.g.dart';
 
 @riverpod
-AnalyticsRepository analyticsRepository(Ref ref) => AnalyticsRepository();
+AnalyticsRepository analyticsRepository(AnalyticsRepositoryRef ref) => AnalyticsRepository();
 
 @riverpod
-Future<StatsSnapshot> statsSnapshot(Ref ref, String period) async {
+Future<StatsSnapshot> statsSnapshot(StatsSnapshotRef ref, String period) async {
   final userId = ref.watch(profileNotifierProvider).valueOrNull?.id;
   if (userId == null) {
     return StatsSnapshot(

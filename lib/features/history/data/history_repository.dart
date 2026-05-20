@@ -44,8 +44,7 @@ class HistoryRepository {
           .from('workouts')
           .select('id, title, started_at, duration_sec, total_volume_kg, calories_burned, total_sets')
           .eq('user_id', userId)
-          .eq('status', 'completed')
-          .order('started_at', ascending: false);
+          .eq('status', 'completed');
 
       if (dateFrom != null) {
         query = query.gte('started_at', dateFrom.toIso8601String());
@@ -54,7 +53,7 @@ class HistoryRepository {
         query = query.lte('started_at', dateTo.toIso8601String());
       }
 
-      final rows = await query;
+      final rows = await query.order('started_at', ascending: false);
 
       if (exerciseNameFilter != null && exerciseNameFilter.isNotEmpty) {
         // Filter client-side for exercise name (avoids complex join for now)

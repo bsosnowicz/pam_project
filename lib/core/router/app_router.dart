@@ -20,16 +20,24 @@ import '../../shared/widgets/shell_scaffold.dart';
 
 part 'app_router.g.dart';
 
-@Riverpod(keepAlive: true)
-GoRouter appRouter(Ref ref) {
-  final authState = ref.watch(authNotifierProvider);
-  final profileAsync = ref.watch(profileNotifierProvider);
+class _RouterRefreshNotifier extends ChangeNotifier {
+  _RouterRefreshNotifier(Ref ref) {
+    ref.listen(authNotifierProvider, (_, __) => notifyListeners());
+    ref.listen(profileNotifierProvider, (_, __) => notifyListeners());
+  }
+}
 
+@Riverpod(keepAlive: true)
+GoRouter appRouter(AppRouterRef ref) {
   return GoRouter(
     initialLocation: '/login',
+    refreshListenable: _RouterRefreshNotifier(ref),
     redirect: (context, state) {
-      final isAuthenticated = authState is _Authenticated;
-      final isLoading = authState is _Loading;
+      final authState = ref.read(authNotifierProvider);
+      final profileAsync = ref.read(profileNotifierProvider);
+
+      final isAuthenticated = authState.maybeWhen(authenticated: (_) => true, orElse: () => false);
+      final isLoading = authState.maybeWhen(loading: () => true, orElse: () => false);
       final onAuthRoute = state.matchedLocation == '/login' ||
           state.matchedLocation == '/register';
 

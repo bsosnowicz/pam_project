@@ -6,6 +6,7 @@ import '../../../shared/widgets/primary_button.dart';
 import '../../../core/supabase/supabase_client.dart';
 import '../domain/user_profile.dart';
 import 'profile_provider.dart';
+import '../../auth/presentation/auth_provider.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -76,6 +77,16 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
+          TextButton.icon(
+            onPressed: () => ref.read(authNotifierProvider.notifier).signOut(),
+            icon: const Icon(Icons.logout),
+            label: const Text('Wyloguj'),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),

@@ -13,7 +13,7 @@ class ProfileRepository {
           .eq('id', userId)
           .maybeSingle();
       if (data == null) return null;
-      return UserProfile.fromJson(data);
+      return _fromRow(data);
     } catch (e) {
       throw NetworkException('Nie mozna zaladowac profilu: $e');
     }
@@ -23,10 +23,10 @@ class ProfileRepository {
     try {
       final data = await supabase
           .from(_table)
-          .insert(_toRow(profile))
+          .upsert(_toRow(profile))
           .select()
           .single();
-      return UserProfile.fromJson(data);
+      return _fromRow(data);
     } catch (e) {
       throw NetworkException('Nie mozna zapisac profilu: $e');
     }
@@ -40,7 +40,7 @@ class ProfileRepository {
           .eq('id', profile.id)
           .select()
           .single();
-      return UserProfile.fromJson(data);
+      return _fromRow(data);
     } catch (e) {
       throw NetworkException('Nie mozna zaktualizowac profilu: $e');
     }
@@ -54,4 +54,19 @@ class ProfileRepository {
         'gender': p.gender,
         'activity_level': p.activityLevel,
       };
+
+  UserProfile _fromRow(Map<String, dynamic> row) => UserProfile(
+        id: row['id'] as String,
+        weightKg: (row['weight_kg'] as num).toDouble(),
+        heightCm: (row['height_cm'] as num).toDouble(),
+        age: row['age'] as int,
+        gender: row['gender'] as String,
+        activityLevel: row['activity_level'] as String,
+        createdAt: row['created_at'] != null
+            ? DateTime.parse(row['created_at'] as String)
+            : null,
+        updatedAt: row['updated_at'] != null
+            ? DateTime.parse(row['updated_at'] as String)
+            : null,
+      );
 }

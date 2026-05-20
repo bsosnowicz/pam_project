@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/utils/date_utils.dart';
 import '../../../shared/widgets/empty_state_widget.dart';
 import 'history_provider.dart';
+import '../data/history_repository.dart';
 
 class HistoryScreen extends ConsumerStatefulWidget {
   const HistoryScreen({super.key});

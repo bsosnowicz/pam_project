@@ -114,7 +114,7 @@ class LiveTrackingNotifier extends _$LiveTrackingNotifier {
         (exercises, startedAt, elapsedSec),
       LivePaused(:final exercises, :final startedAt, :final elapsedSec) =>
         (exercises, startedAt, elapsedSec),
-      _ => ([], DateTime.now(), 0),
+      _ => (<WorkoutExercise>[], DateTime.now(), 0),
     };
 
     final completedSets = exercises
